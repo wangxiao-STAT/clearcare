@@ -218,18 +218,42 @@ def main():
         else:
             st.subheader(f"{len(providers)} providers found")
 
-        display_cols = {
-            "Provider": providers.apply(format_provider_name, axis=1),
-            "City": providers["Rndrng_Prvdr_City"],
-            "ZIP": providers["Rndrng_Prvdr_Zip5"],
-        }
-        if "distance_miles" in providers.columns:
-            display_cols["Distance"] = providers["distance_miles"].apply(lambda d: f"{d:.1f} mi")
-        display_cols["Avg Billed Charge"] = providers["Avg_Sbmtd_Chrg"].apply(lambda x: f"${x:,.0f}")
-        display_cols["Medicare Allowed"] = providers["Avg_Mdcr_Alowd_Amt"].apply(lambda x: f"${x:,.0f}")
-        display_cols["Medicare Patients"] = providers["Tot_Benes"].apply(lambda x: f"{int(x):,}" if pd.notna(x) else "N/A")
-        display_df = pd.DataFrame(display_cols)
-        st.dataframe(display_df, width="stretch", hide_index=True)
+        display = providers.head(50)
+        has_distance = "distance_miles" in display.columns
+        for _, row in display.iterrows():
+            with st.container(border=True):
+                top_cols = st.columns([4, 1])
+                top_cols[0].markdown(f"**{format_provider_name(row)}**")
+                if has_distance and pd.notna(row.get("distance_miles")):
+                    top_cols[1].markdown(
+                        f"<div style='text-align:right;color:#0B3B5F;font-weight:600'>{row['distance_miles']:.1f} mi</div>",
+                        unsafe_allow_html=True,
+                    )
+                st.caption(f"{row['Rndrng_Prvdr_City']} · {row['Rndrng_Prvdr_Zip5']}")
+
+                bottom_cols = st.columns([2, 2, 2])
+                bottom_cols[0].markdown(
+                    f"**${row['Avg_Sbmtd_Chrg']:,.0f}**  \n"
+                    f"<span style='font-size:0.75rem;color:#6b7280'>avg billed</span>",
+                    unsafe_allow_html=True,
+                )
+                bottom_cols[1].markdown(
+                    f"${row['Avg_Mdcr_Alowd_Amt']:,.0f}  \n"
+                    f"<span style='font-size:0.75rem;color:#6b7280'>Medicare</span>",
+                    unsafe_allow_html=True,
+                )
+                patient_count = f"{int(row['Tot_Benes']):,}" if pd.notna(row['Tot_Benes']) else "N/A"
+                bottom_cols[2].markdown(
+                    f"{patient_count}  \n"
+                    f"<span style='font-size:0.75rem;color:#6b7280'>patients</span>",
+                    unsafe_allow_html=True,
+                )
+
+        if len(providers) > 50:
+            st.caption(
+                f"Showing top 50 of {len(providers)} providers. "
+                "Narrow your ZIP radius or change sort order to see others."
+            )
 
     # Caveats
     st.divider()
