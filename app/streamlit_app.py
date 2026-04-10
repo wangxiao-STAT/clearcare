@@ -50,7 +50,7 @@ def format_provider_name(row: pd.Series) -> str:
 def main():
     st.markdown("""
 <style>
-.block-container { padding-top: 1.5rem; padding-bottom: 2rem; }
+.block-container { padding-top: 4rem; padding-bottom: 2rem; }
 [data-testid="stVerticalBlockBorderWrapper"] { margin-bottom: 0.5rem; }
 </style>
 """, unsafe_allow_html=True)
