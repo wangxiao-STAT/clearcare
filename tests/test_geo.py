@@ -51,3 +51,63 @@ def test_haversine_indianapolis_to_fort_wayne():
     # Indianapolis (46202) to Fort Wayne (46802) is about 105-110 miles straight line
     d = haversine_miles(39.7684, -86.1581, 41.0793, -85.1393)
     assert 95 < d < 125
+
+
+def _sample_providers_df():
+    return pd.DataFrame(
+        [
+            {"Rndrng_NPI": "1001", "Rndrng_Prvdr_Zip5": "46202", "service_name": "MRI Knee"},
+            {"Rndrng_NPI": "1002", "Rndrng_Prvdr_Zip5": "46131", "service_name": "MRI Knee"},  # Franklin, ~22 mi from Indy
+            {"Rndrng_NPI": "1003", "Rndrng_Prvdr_Zip5": "46802", "service_name": "MRI Knee"},  # Fort Wayne, ~100+ mi
+            {"Rndrng_NPI": "1004", "Rndrng_Prvdr_Zip5": "47901", "service_name": "MRI Knee"},  # Lafayette, ~55 mi
+            {"Rndrng_NPI": "1005", "Rndrng_Prvdr_Zip5": "99999", "service_name": "MRI Knee"},  # missing ZIP
+        ]
+    )
+
+
+def _zip_coords_for_tests():
+    return {
+        "46202": (39.7684, -86.1581),
+        "46802": (41.0793, -85.1393),
+        "47901": (40.4167, -86.8753),
+        "46131": (39.4806, -86.0531),
+    }
+
+
+def test_filter_by_radius_basic():
+    providers = _sample_providers_df()
+    coords = _zip_coords_for_tests()
+    result = filter_by_radius(providers, "46202", 25.0, coords)
+    zips = result["Rndrng_Prvdr_Zip5"].tolist()
+    assert "46202" in zips  # 0 mi
+    assert "46131" in zips  # ~22 mi
+    assert "46802" not in zips  # >25 mi
+    assert "47901" not in zips  # >25 mi
+    assert "99999" not in zips  # unknown ZIP
+
+
+def test_filter_by_radius_sorts_by_distance():
+    providers = _sample_providers_df()
+    coords = _zip_coords_for_tests()
+    result = filter_by_radius(providers, "46202", 200.0, coords)
+    distances = result["distance_miles"].tolist()
+    assert distances == sorted(distances)
+    assert result.iloc[0]["Rndrng_Prvdr_Zip5"] == "46202"
+
+
+def test_filter_by_radius_unknown_user_zip_returns_empty():
+    providers = _sample_providers_df()
+    coords = _zip_coords_for_tests()
+    result = filter_by_radius(providers, "12345", 25.0, coords)
+    assert result.empty
+    assert "distance_miles" in result.columns
+
+
+def test_filter_by_radius_provider_zip_missing_excluded():
+    providers = _sample_providers_df()
+    coords = _zip_coords_for_tests()
+    result = filter_by_radius(providers, "46202", 500.0, coords)
+    zips = result["Rndrng_Prvdr_Zip5"].tolist()
+    assert "99999" not in zips
+    # The other 4 known ZIPs should be present
+    assert len(result) == 4
