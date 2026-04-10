@@ -113,18 +113,11 @@ def main():
 
     # Caveats
     st.divider()
-    st.markdown(
-        """
-        <div style="background-color: #fff3cd; padding: 1rem; border-radius: 0.5rem; font-size: 0.85rem;">
-        <strong>Important:</strong>
-        <ul style="margin-bottom: 0;">
-        <li>Prices shown are based on Medicare billing data (2023). Actual cash or self-pay prices may differ.</li>
-        <li>Estimates do not include separate charges for anesthesia, pathology, facility fees, or additional services.</li>
-        <li>This tool provides estimates only — contact the provider for a quote before scheduling.</li>
-        </ul>
-        </div>
-        """,
-        unsafe_allow_html=True,
+    st.warning(
+        "**Important:**\n"
+        "- Prices shown are based on Medicare billing data (2023). Actual cash or self-pay prices may differ.\n"
+        "- Estimates do not include separate charges for anesthesia, pathology, facility fees, or additional services.\n"
+        "- This tool provides estimates only — contact the provider for a quote before scheduling."
     )
 
 
