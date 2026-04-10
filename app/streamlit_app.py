@@ -55,12 +55,27 @@ def main():
 </style>
 """, unsafe_allow_html=True)
 
+    # Branded header with inline SVG logo
+    st.markdown("""
+<div style="display:flex;align-items:center;gap:14px;padding-bottom:0.75rem;">
+  <svg width="44" height="44" viewBox="0 0 44 44" xmlns="http://www.w3.org/2000/svg" aria-label="ClearCare logo">
+    <path d="M22 2 L40 9 L40 22 Q40 33 22 42 Q4 33 4 22 L4 9 Z"
+          fill="#0B3B5F" stroke="#0B3B5F" stroke-width="1" stroke-linejoin="round"/>
+    <path d="M14 17 L26 17 L30 21 L22 29 L12 19 Z" fill="#FFFFFF"/>
+    <circle cx="16" cy="20" r="1.4" fill="#0B3B5F"/>
+    <line x1="19" y1="23" x2="26" y2="16" stroke="#0B3B5F" stroke-width="1.4" stroke-linecap="round"/>
+  </svg>
+  <div>
+    <div style="font-size:28px;font-weight:700;color:#0B3B5F;line-height:1.1;letter-spacing:-0.01em;">ClearCare</div>
+    <div style="font-size:14px;color:#6b7280;line-height:1.2;">Compare healthcare prices in Indiana</div>
+  </div>
+</div>
+""", unsafe_allow_html=True)
+    st.divider()
+
     df = cached_load()
 
     # --- Sidebar ---
-    st.sidebar.title("ClearCare")
-    st.sidebar.markdown("Compare healthcare prices across Indiana providers")
-
     query = st.sidebar.text_input(
         "Search for a procedure",
         placeholder="e.g. knee MRI, colonoscopy, blood test",
