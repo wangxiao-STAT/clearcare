@@ -116,6 +116,13 @@ def render_landing():
         st.session_state.view = "search"
         st.rerun()
 
+    st.markdown(
+        "<div style='color:#6b7280;font-size:0.8rem;text-align:center;padding-top:0.75rem;'>"
+        "Built by Xiao Wang, Purdue University"
+        "</div>",
+        unsafe_allow_html=True,
+    )
+
     st.divider()
     st.warning(
         "**Important:**\n"
