@@ -10,6 +10,7 @@ import pandas as pd
 from app.data_loader import load_data, get_providers_for_service, get_statewide_stats
 from app.search import search_services, SERVICE_CATALOG
 from app.geo import load_zip_coords, filter_by_radius
+from app.explanations import load_explanations, get_explanation
 
 st.set_page_config(page_title="ClearCare — Compare Healthcare Prices", layout="wide")
 
@@ -22,6 +23,14 @@ def cached_load():
 @st.cache_data
 def cached_zip_coords():
     return load_zip_coords()
+
+
+@st.cache_data
+def cached_explanations():
+    try:
+        return load_explanations()
+    except FileNotFoundError:
+        return {}
 
 
 def format_provider_name(row: pd.Series) -> str:
@@ -110,6 +119,29 @@ def main():
     col2.metric("Typical (median)", f"${stats['charge_median']:,.0f}")
     col3.metric("High (90th percentile)", f"${stats['charge_p90']:,.0f}")
     st.caption("Statewide billed charges — Indiana providers, Medicare data 2023")
+
+    # About this service (from pre-generated explanations)
+    explanations = cached_explanations()
+    explanation = get_explanation(explanations, selected_name)
+    if explanation:
+        with st.expander("About this service"):
+            st.markdown("**What it is**")
+            st.markdown(explanation["description"])
+
+            st.markdown("**Typically included**")
+            for item in explanation["typically_included"]:
+                st.markdown(f"- {item}")
+
+            st.markdown("**May be billed separately**")
+            for item in explanation["billed_separately"]:
+                st.markdown(f"- {item}")
+
+            st.markdown("**What to expect**")
+            st.markdown(explanation["what_to_expect"])
+
+            st.markdown("**Questions to ask before scheduling**")
+            for q in explanation["questions_to_ask"]:
+                st.markdown(f"- {q}")
 
     st.divider()
 
