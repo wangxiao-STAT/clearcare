@@ -38,14 +38,14 @@ def test_case_insensitive():
     assert results[0]["name"] == "MRI Knee"
 
 
-def test_blood_test_synonym():
-    results = search_services("blood test")
+def test_cbc_synonym():
+    results = search_services("cbc")
     assert len(results) == 1
-    assert results[0]["name"] == "Blood Work (CBC + Lipid Panel)"
+    assert results[0]["name"] == "CBC (Complete Blood Count)"
 
 
-def test_catalog_has_six_services():
-    assert len(SERVICE_CATALOG) == 6
+def test_catalog_has_sixteen_services():
+    assert len(SERVICE_CATALOG) == 16
 
 
 def test_each_service_has_required_fields():
@@ -55,3 +55,33 @@ def test_each_service_has_required_fields():
         assert "hcpcs_codes" in svc
         assert "synonyms" in svc
         assert len(svc["hcpcs_codes"]) > 0
+
+
+def test_a1c_synonym():
+    results = search_services("a1c")
+    assert len(results) == 1
+    assert results[0]["name"] == "HbA1c (Diabetes Test)"
+
+
+def test_thyroid_synonym():
+    results = search_services("thyroid")
+    assert len(results) == 1
+    assert results[0]["name"] == "TSH (Thyroid Test)"
+
+
+def test_echo_synonym():
+    results = search_services("echo")
+    assert len(results) == 1
+    assert results[0]["name"] == "Echocardiogram"
+
+
+def test_egd_synonym():
+    results = search_services("egd")
+    assert len(results) == 1
+    assert results[0]["name"] == "Upper GI Endoscopy (EGD)"
+
+
+def test_chest_xray_synonym():
+    results = search_services("chest xray")
+    assert len(results) == 1
+    assert results[0]["name"] == "Chest X-ray"
