@@ -1,0 +1,347 @@
+{
+  "CBC (Complete Blood Count)": {
+    "description": "A CBC is a common blood test that measures your red blood cells, white blood cells, and platelets. Doctors use it to check your overall health, look for infections, anemia, and many other conditions.",
+    "typically_included": [
+      "Drawing the blood sample",
+      "The lab test itself",
+      "A report sent to your doctor"
+    ],
+    "billed_separately": [
+      "Office visit if the blood draw happens during a doctor's appointment",
+      "Additional tests ordered alongside the CBC (each test is usually billed separately)",
+      "Hospital outpatient facility fee if drawn at a hospital lab"
+    ],
+    "what_to_expect": "A quick blood draw from your arm, usually taking less than 5 minutes. No prep is needed. You can eat normally unless other tests are ordered that require fasting.",
+    "questions_to_ask": [
+      "Is this being drawn at a hospital outpatient lab or a freestanding lab like Quest or LabCorp? Freestanding labs are usually much cheaper.",
+      "Is the lab in my insurance network?",
+      "Is the blood draw fee (venipuncture) included, or billed separately?",
+      "If my doctor ordered multiple tests, can I see the price for each one?",
+      "Does my insurance require I use a specific lab for in-network coverage?"
+    ]
+  },
+  "CMP (Comprehensive Metabolic Panel)": {
+    "description": "A CMP is a blood test that measures 14 things in your blood, including kidney and liver function, blood sugar, and electrolytes. Doctors use it as a general health check or to monitor conditions like diabetes and high blood pressure.",
+    "typically_included": [
+      "Drawing the blood sample",
+      "All 14 lab tests in the panel",
+      "A report sent to your doctor"
+    ],
+    "billed_separately": [
+      "Office visit if drawn during a doctor's appointment",
+      "Other tests ordered at the same time",
+      "Hospital outpatient facility fee if drawn at a hospital"
+    ],
+    "what_to_expect": "A quick blood draw from your arm. You may be asked to fast beforehand for the most accurate glucose reading. The draw itself takes a few minutes.",
+    "questions_to_ask": [
+      "Is the blood drawn at a hospital lab or a freestanding lab? Freestanding is usually much cheaper.",
+      "Is the lab in my insurance network?",
+      "Is the venipuncture (blood draw) fee included or separate?",
+      "If multiple tests are ordered together, can I see the price per test?",
+      "Does my insurance require a specific lab for in-network pricing?"
+    ]
+  },
+  "CT Abdomen & Pelvis": {
+    "description": "A CT scan of the abdomen and pelvis takes detailed cross-section pictures of your belly and hip area organs, including your liver, kidneys, intestines, and bladder. Doctors order this to investigate pain, kidney stones, possible appendicitis, or to check for other abdominal issues.",
+    "typically_included": [
+      "Use of the CT scanner",
+      "The scan images",
+      "Radiologist interpretation and report"
+    ],
+    "billed_separately": [
+      "Facility fee (usually higher at a hospital than a freestanding imaging center)",
+      "Contrast dye — most abdomen/pelvis scans use contrast, which you may get by IV, by drinking it, or both",
+      "The contrast dye itself as a separate line item",
+      "Your doctor's follow-up visit"
+    ],
+    "what_to_expect": "You may need to fast for a few hours and drink contrast fluid before the scan. The scan itself is quick — about 10-15 minutes. If IV contrast is used, you might feel a warm flush briefly.",
+    "questions_to_ask": [
+      "Can I have this done at a freestanding imaging center rather than a hospital outpatient department?",
+      "Will both oral and IV contrast be used, and are they billed separately?",
+      "How much is the facility fee?",
+      "Is the radiologist in my insurance network?",
+      "Can I get a Good Faith Estimate that includes contrast and facility fees before I schedule?"
+    ]
+  },
+  "CT Head": {
+    "description": "A CT scan of the head uses X-rays to create cross-section images of your brain and skull. Doctors often order it after a head injury, stroke symptoms, or severe headaches because it's faster than an MRI and good at spotting bleeding or fractures.",
+    "typically_included": [
+      "Use of the CT scanner",
+      "The scan images",
+      "Radiologist interpretation and report"
+    ],
+    "billed_separately": [
+      "Facility fee (usually higher at hospital outpatient than at imaging centers)",
+      "Contrast dye if ordered (most head CTs don't use it)",
+      "Emergency department visit fee if done in an ER",
+      "Your doctor's follow-up visit to discuss results"
+    ],
+    "what_to_expect": "The scan itself takes only a few minutes. You'll lie on a table that slides through a donut-shaped machine. It's quick, painless, and doesn't feel as enclosed as an MRI.",
+    "questions_to_ask": [
+      "Can I get this scan at an outpatient imaging center instead of a hospital or ER? The price difference can be large.",
+      "Is a facility fee charged, and how much?",
+      "Is the radiologist in my network?",
+      "Is contrast needed? What does it cost if yes?",
+      "Can I get a written Good Faith Estimate before the scan?"
+    ]
+  },
+  "Chest X-ray": {
+    "description": "A chest X-ray uses a small amount of radiation to take pictures of your lungs, heart, ribs, and the bones in your chest. It's one of the most common imaging tests and is used to check for pneumonia, broken ribs, heart problems, and many other conditions.",
+    "typically_included": [
+      "The X-ray images (usually 2 views — front and side)",
+      "A radiologist reading the images and writing a report",
+      "Use of the X-ray equipment"
+    ],
+    "billed_separately": [
+      "Facility fee if done at a hospital or ER (freestanding imaging centers are usually cheaper)",
+      "Your doctor's office visit to order and review the X-ray",
+      "Additional views if the radiologist requests more images"
+    ],
+    "what_to_expect": "The X-ray takes just a few minutes. You'll stand in front of a plate and hold your breath briefly. You'll be asked to remove jewelry and wear a gown. Tell the tech if you might be pregnant.",
+    "questions_to_ask": [
+      "Can I have this done at a freestanding imaging center rather than a hospital?",
+      "Will there be a separate reading fee by the radiologist? Is the radiologist in my insurance network?",
+      "Is a facility fee added to the price?",
+      "What's the total estimated cost including reading fees?",
+      "If this is for an urgent issue, is urgent care cheaper than the ER?"
+    ]
+  },
+  "Colonoscopy": {
+    "description": "A colonoscopy is a procedure where a doctor uses a flexible tube with a camera to look inside your large intestine. It's used to screen for colon cancer, find the cause of bleeding or bowel changes, and remove polyps before they can turn cancerous.",
+    "typically_included": [
+      "The procedure performed by a gastroenterologist",
+      "Use of the endoscopy suite and equipment",
+      "Basic observation during recovery"
+    ],
+    "billed_separately": [
+      "Anesthesia and the anesthesiologist — often a large separate bill",
+      "Pathology fees if polyps or biopsies are sent to a lab",
+      "Facility fee (a hospital outpatient department usually costs far more than an ambulatory surgery center)",
+      "Prep medications (you pay for the bowel-cleansing prep separately)",
+      "Follow-up visits to discuss results"
+    ],
+    "what_to_expect": "You'll spend the day before on a clear liquid diet and drink a strong laxative to clean out your colon. The procedure itself takes 30-60 minutes under sedation and you won't remember it. Plan to rest the rest of the day and have someone drive you home.",
+    "questions_to_ask": [
+      "Can this be done at an ambulatory surgery center instead of a hospital? The price difference is often thousands of dollars.",
+      "Is the anesthesiologist in my insurance network? (This is a top source of surprise bills.)",
+      "If polyps are found and sent to pathology, is that a separate bill? Is the lab in-network?",
+      "Is this billed as screening (usually fully covered by insurance) or diagnostic (subject to copays and deductibles)?",
+      "Can I get a Good Faith Estimate that includes the facility, doctor, anesthesia, and pathology fees?"
+    ]
+  },
+  "Echocardiogram": {
+    "description": "An echocardiogram — often just called an 'echo' — uses sound waves to create moving pictures of your heart. Doctors order it to check how well your heart is pumping, look at the valves, and detect many heart conditions.",
+    "typically_included": [
+      "Use of the ultrasound equipment",
+      "The scan performed by a sonographer",
+      "A cardiologist's interpretation and report"
+    ],
+    "billed_separately": [
+      "Cardiologist's interpretation fee (may be a separate line item)",
+      "Facility fee at hospital-based centers",
+      "Stress echo add-on if your doctor orders one",
+      "Your cardiologist's office visit"
+    ],
+    "what_to_expect": "You'll lie on your side while a technician moves a small device across your chest with gel. The scan takes 30-60 minutes and is painless. You may be asked to hold your breath briefly at times.",
+    "questions_to_ask": [
+      "Can this be done at a freestanding cardiology imaging center rather than a hospital outpatient department?",
+      "Is the cardiologist who reads the study in my insurance network?",
+      "Is the interpretation fee included in the quoted price?",
+      "Is a stress echo being ordered, or just a resting echo? Stress echoes cost more.",
+      "Can I get a Good Faith Estimate including all fees before scheduling?"
+    ]
+  },
+  "HbA1c (Diabetes Test)": {
+    "description": "An HbA1c test measures your average blood sugar over the past 2-3 months. It's the main test used to diagnose diabetes and monitor how well diabetes treatment is working.",
+    "typically_included": [
+      "The blood draw",
+      "The lab test",
+      "A report sent to your doctor"
+    ],
+    "billed_separately": [
+      "Office visit if the blood draw happens during a doctor's appointment",
+      "Other tests ordered at the same time",
+      "Hospital outpatient facility fee if drawn at a hospital lab"
+    ],
+    "what_to_expect": "A quick blood draw from your arm — a few minutes total. No fasting is needed for this test. Some clinics can run it from a finger prick instead.",
+    "questions_to_ask": [
+      "Is this being drawn at a hospital lab or a freestanding lab? Freestanding is almost always cheaper.",
+      "Is the lab in my insurance network?",
+      "For people with a diabetes diagnosis, this test is often covered as diagnostic monitoring. Is my insurance covering it fully or subject to copay?",
+      "Is the blood draw fee included in the quoted price?",
+      "Can I use a self-pay discount if I'm uninsured?"
+    ]
+  },
+  "Lipid Panel": {
+    "description": "A lipid panel is a blood test that measures your cholesterol and triglycerides. Doctors use it to check your risk of heart disease and stroke. It's commonly done as part of a routine physical.",
+    "typically_included": [
+      "Drawing the blood sample",
+      "The lab tests (total cholesterol, HDL, LDL, triglycerides)",
+      "A report sent to your doctor"
+    ],
+    "billed_separately": [
+      "Office visit if the blood draw happens during a doctor's appointment",
+      "Additional tests ordered at the same time (each billed separately)",
+      "Hospital outpatient facility fee if drawn at a hospital lab"
+    ],
+    "what_to_expect": "A quick blood draw from your arm. You'll usually be asked to fast for 9-12 hours beforehand (no food or drinks except water) for the most accurate results. The draw itself takes a few minutes.",
+    "questions_to_ask": [
+      "Is this drawn at a hospital outpatient lab or a freestanding lab like Quest or LabCorp? The price difference can be huge.",
+      "Is the lab in my insurance network?",
+      "Most preventive lipid panels are covered at no cost by insurance. Is this classified as preventive or diagnostic?",
+      "Is the blood draw fee included in the quoted price?",
+      "Can I get the bill broken down by test if multiple are ordered?"
+    ]
+  },
+  "MRI Brain": {
+    "description": "An MRI of the brain uses a powerful magnet and radio waves to create detailed pictures of your brain. Doctors order this to look for causes of headaches, stroke, tumors, multiple sclerosis, or other brain conditions.",
+    "typically_included": [
+      "Use of the MRI scanner for the scheduled time",
+      "The scan images themselves",
+      "A radiologist reading the scan and writing a report for your doctor"
+    ],
+    "billed_separately": [
+      "Facility fee if done at a hospital outpatient center (often much higher than a freestanding imaging center)",
+      "Contrast dye if your doctor orders the 'with contrast' version",
+      "The referring physician's office visit",
+      "Your doctor's separate follow-up visit to review results"
+    ],
+    "what_to_expect": "You'll lie still on a table that slides into the scanner for about 30-60 minutes. No prep is needed for most brain MRIs, but you'll remove metal objects and may need to wear earplugs because the machine is loud. Tell the staff if you're claustrophobic.",
+    "questions_to_ask": [
+      "Is the scan at a hospital outpatient department or a freestanding imaging center? Freestanding centers are usually much cheaper for the same scan.",
+      "Will there be a separate facility fee, and what is it?",
+      "Do I need contrast? If so, what's the added cost?",
+      "Is the radiologist in my insurance network?",
+      "Can I get a written Good Faith Estimate before scheduling?"
+    ]
+  },
+  "MRI Knee": {
+    "description": "An MRI of the knee takes detailed pictures of the bones, cartilage, ligaments, and tendons in your knee joint using a strong magnet. Doctors order this to find the cause of knee pain, swelling, or an injury that didn't show up well on an X-ray.",
+    "typically_included": [
+      "Use of the MRI scanner for the scheduled time",
+      "The scan images themselves",
+      "A radiologist reading the scan and writing a report"
+    ],
+    "billed_separately": [
+      "Facility fee if the scan is done at a hospital outpatient center",
+      "Contrast dye if your doctor orders the scan 'with contrast'",
+      "The referring physician's office visit (separate from the scan)"
+    ],
+    "what_to_expect": "You'll lie still on a table that slides into the scanner for about 30-45 minutes. No prep needed for most knee MRIs, but you'll remove any metal (jewelry, belts). Some people find the noise loud — ask for earplugs.",
+    "questions_to_ask": [
+      "Is this billed as a hospital outpatient procedure or at a freestanding imaging center? Freestanding centers are usually cheaper.",
+      "Will there be a separate facility fee, and how much is it?",
+      "Do I need contrast dye? If yes, what does that add to the cost?",
+      "Is the radiologist who reads my scan in my insurance network?",
+      "Can I get a Good Faith Estimate in writing before scheduling?"
+    ]
+  },
+  "Physical Therapy Evaluation": {
+    "description": "A physical therapy evaluation is your first visit with a physical therapist. They'll assess your injury, pain, or movement problem, set goals, and create a treatment plan with exercises and therapies tailored to you.",
+    "typically_included": [
+      "The PT's time to review your history and examine you",
+      "Basic movement and strength testing",
+      "A written plan of care with goals and recommended frequency of visits"
+    ],
+    "billed_separately": [
+      "Follow-up treatment visits (billed separately each time)",
+      "Modalities like ultrasound, electrical stimulation, or heat packs added during treatment",
+      "Specialized testing or equipment use",
+      "Home exercise equipment the PT may recommend"
+    ],
+    "what_to_expect": "The evaluation usually takes 45-60 minutes. Bring any referral, imaging results, and a list of medications. Wear comfortable clothes you can move in. The PT will ask about your injury or problem, watch how you move, and test strength and range of motion.",
+    "questions_to_ask": [
+      "Is the PT clinic in my insurance network?",
+      "How many visits does my insurance authorize, and do I need prior authorization?",
+      "What's the cost difference between low-complexity and moderate-complexity evaluations?",
+      "Are treatment modalities like ultrasound or electrical stim billed on top of each visit?",
+      "If I don't have insurance, do you offer a self-pay cash discount? What's the cash price per visit?"
+    ]
+  },
+  "Screening Mammogram": {
+    "description": "A screening mammogram is an X-ray of your breasts used to check for early signs of breast cancer in women who don't have any symptoms. Guidelines generally recommend screening mammograms starting in your 40s or 50s, depending on risk factors.",
+    "typically_included": [
+      "The mammogram itself (usually 2 views of each breast)",
+      "A radiologist reading the images and writing a report",
+      "Use of the mammography equipment"
+    ],
+    "billed_separately": [
+      "A follow-up diagnostic mammogram if the screening finds something unclear (this is a different procedure)",
+      "Ultrasound or other imaging if the radiologist wants a closer look",
+      "Your doctor's visit to discuss results",
+      "Facility fee at hospital-based centers"
+    ],
+    "what_to_expect": "The appointment takes about 20-30 minutes. The technician will position each breast on the machine and press it briefly for clear images — it may feel uncomfortable but is quick. Don't wear deodorant, lotion, or powder on the day of the scan.",
+    "questions_to_ask": [
+      "Most insurance plans cover screening mammograms at no cost as preventive care. Is mine confirmed as fully covered?",
+      "If follow-up imaging is needed, how much will that cost, and will it be billed as diagnostic (not preventive)?",
+      "Is the facility in my insurance network?",
+      "Is the radiologist reading the scan in my network?",
+      "What's the difference in price between a freestanding imaging center and a hospital-based center?"
+    ]
+  },
+  "TSH (Thyroid Test)": {
+    "description": "A TSH (thyroid stimulating hormone) test is a blood test that checks how your thyroid gland is working. Doctors order it to diagnose and monitor thyroid problems like hypothyroidism (underactive) and hyperthyroidism (overactive).",
+    "typically_included": [
+      "The blood draw",
+      "The lab test",
+      "A report sent to your doctor"
+    ],
+    "billed_separately": [
+      "Office visit if the draw happens at a doctor's appointment",
+      "Follow-up thyroid tests (free T3, free T4) if your TSH is abnormal — these are billed separately",
+      "Hospital outpatient facility fee if drawn at a hospital"
+    ],
+    "what_to_expect": "A simple blood draw from your arm, usually taking just a few minutes. No fasting is needed. Take any thyroid medications as prescribed unless your doctor says otherwise.",
+    "questions_to_ask": [
+      "Is this drawn at a hospital lab or a freestanding lab like Quest or LabCorp? Freestanding labs are usually much cheaper.",
+      "Is the lab in my insurance network?",
+      "Is the venipuncture fee included in the quoted price?",
+      "If my TSH is abnormal and follow-up tests are needed, will those be billed separately?",
+      "Can I use a self-pay cash discount if I don't have insurance?"
+    ]
+  },
+  "Ultrasound Abdomen": {
+    "description": "An abdominal ultrasound uses sound waves (no radiation) to take pictures of the organs in your belly, including your liver, gallbladder, kidneys, pancreas, and spleen. Doctors order this to look for gallstones, cysts, or causes of abdominal pain.",
+    "typically_included": [
+      "Use of the ultrasound machine",
+      "The scan performed by a trained sonographer",
+      "A radiologist reviewing the images and writing a report"
+    ],
+    "billed_separately": [
+      "Facility fee if done at a hospital",
+      "Radiologist reading fee (may be a separate charge)",
+      "The referring doctor's office visit to order and review the scan"
+    ],
+    "what_to_expect": "You'll likely be asked to fast for 8-12 hours beforehand for the clearest pictures, especially of the gallbladder. The scan takes about 30-45 minutes. You'll lie down while a technician moves a small handheld device over your belly with warm gel.",
+    "questions_to_ask": [
+      "Is this done at a hospital outpatient center or a freestanding imaging center? The latter is usually cheaper.",
+      "Is the radiologist's interpretation included in the quoted price, or billed separately?",
+      "Is the radiologist in my insurance network?",
+      "Is there a facility fee?",
+      "Can I get a Good Faith Estimate before scheduling?"
+    ]
+  },
+  "Upper GI Endoscopy (EGD)": {
+    "description": "An EGD (upper GI endoscopy) is a procedure where a doctor uses a flexible tube with a camera to look at your esophagus, stomach, and the first part of your small intestine. It's used to find causes of heartburn, swallowing problems, abdominal pain, or to check for ulcers and other issues.",
+    "typically_included": [
+      "The procedure performed by a gastroenterologist",
+      "Use of the endoscopy suite and equipment",
+      "Basic observation during recovery"
+    ],
+    "billed_separately": [
+      "Anesthesia and anesthesiologist fees (often a separate, sizable bill)",
+      "Pathology fees if biopsies are taken and sent to a lab",
+      "Facility fee (ambulatory surgery centers cost less than hospital outpatient departments)",
+      "Follow-up visits to discuss results"
+    ],
+    "what_to_expect": "You'll fast for 8+ hours beforehand. The procedure takes 15-30 minutes under sedation, so you won't remember it. You'll need a driver to take you home and should plan to rest the rest of the day.",
+    "questions_to_ask": [
+      "Can I have this done at an ambulatory surgery center instead of a hospital outpatient department? Price difference is usually significant.",
+      "Is the anesthesiologist in my insurance network?",
+      "If biopsies are taken, is the pathology lab in-network? What's the cost range?",
+      "What's the total estimated bill including doctor, facility, anesthesia, and any biopsy fees?",
+      "Can I get a written Good Faith Estimate before the procedure?"
+    ]
+  }
+}
