@@ -12,7 +12,12 @@ from app.search import search_services, SERVICE_CATALOG
 from app.geo import load_zip_coords, filter_by_radius
 from app.explanations import load_explanations, get_explanation
 
-st.set_page_config(page_title="ClearCare — Compare Healthcare Prices", layout="wide")
+st.set_page_config(
+    page_title="ClearCare — Compare Healthcare Prices",
+    page_icon="🏥",
+    layout="centered",
+    initial_sidebar_state="auto",
+)
 
 
 @st.cache_data
@@ -43,6 +48,13 @@ def format_provider_name(row: pd.Series) -> str:
 
 
 def main():
+    st.markdown("""
+<style>
+.block-container { padding-top: 1.5rem; padding-bottom: 2rem; }
+[data-testid="stVerticalBlockBorderWrapper"] { margin-bottom: 0.5rem; }
+</style>
+""", unsafe_allow_html=True)
+
     df = cached_load()
 
     # --- Sidebar ---
