@@ -104,7 +104,7 @@ def main():
                 "Medicare Patients": providers["Tot_Benes"].apply(lambda x: f"{int(x):,}" if pd.notna(x) else "N/A"),
             }
         )
-        st.dataframe(display_df, use_container_width=True, hide_index=True)
+        st.dataframe(display_df, width="stretch", hide_index=True)
 
     # Caveats
     st.divider()
