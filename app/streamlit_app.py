@@ -1,5 +1,10 @@
 """ClearCare Prototype — Indiana Healthcare Price Comparison."""
 
+import sys
+from pathlib import Path
+
+sys.path.insert(0, str(Path(__file__).resolve().parent.parent))
+
 import streamlit as st
 import pandas as pd
 from app.data_loader import load_data, get_providers_for_service, get_statewide_stats
