@@ -112,8 +112,8 @@ def test_compute_statewide_stats():
     assert row["charge_median"] == 400.0
 
 
-def test_target_hcpcs_has_12_codes():
-    assert len(TARGET_HCPCS) == 12
+def test_target_hcpcs_has_24_codes():
+    assert len(TARGET_HCPCS) == 24
 
 
 def test_build_dataset_end_to_end():
