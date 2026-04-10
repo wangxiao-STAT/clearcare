@@ -81,11 +81,22 @@ def main():
 
     # Sort
     sort_options = {
+        "Distance (nearest first)": "distance_miles",
         "Price (low to high)": "Avg_Sbmtd_Chrg",
         "Medicare allowed (low to high)": "Avg_Mdcr_Alowd_Amt",
         "Patient volume (high to low)": "Tot_Benes",
     }
-    sort_label = st.sidebar.selectbox("Sort by", list(sort_options.keys()))
+    # Default sort: Distance when ZIP is valid and in the coords table, else Price
+    _zip_coords_for_default = cached_zip_coords()
+    if user_zip and user_zip.isdigit() and len(user_zip) == 5 and user_zip in _zip_coords_for_default:
+        default_sort_index = 0  # Distance
+    else:
+        default_sort_index = 1  # Price
+    sort_label = st.sidebar.selectbox(
+        "Sort by",
+        list(sort_options.keys()),
+        index=default_sort_index,
+    )
     sort_col = sort_options[sort_label]
 
     # --- Main area ---
@@ -103,7 +114,9 @@ def main():
     st.divider()
 
     # Provider table
-    providers = get_providers_for_service(df, selected_name, hcpcs_code=selected_hcpcs, sort_by=sort_col)
+    # If user selected Distance sort but no ZIP, fall back to Price for the initial query
+    effective_sort_col = sort_col if sort_col != "distance_miles" else "Avg_Sbmtd_Chrg"
+    providers = get_providers_for_service(df, selected_name, hcpcs_code=selected_hcpcs, sort_by=effective_sort_col)
 
     # Apply radius filter if user entered a ZIP
     zip_coords = cached_zip_coords()
@@ -123,12 +136,19 @@ def main():
                     f"No providers found within {radius_miles} miles of {user_zip}. "
                     "Try expanding the radius."
                 )
+            elif sort_col != "distance_miles":
+                # User explicitly chose a non-distance sort
+                ascending = sort_col != "Tot_Benes"
+                providers = providers.sort_values(sort_col, ascending=ascending).reset_index(drop=True)
 
     if warning_message:
         st.warning(warning_message)
 
-    if sort_col == "Tot_Benes":
-        providers = providers.sort_values(sort_col, ascending=False).reset_index(drop=True)
+    # Non-ZIP: handle Tot_Benes descending; Price/Medicare already handled by get_providers_for_service;
+    # distance_miles fallback to Price already handled by effective_sort_col
+    if not radius_applied and not warning_message:
+        if sort_col == "Tot_Benes":
+            providers = providers.sort_values("Tot_Benes", ascending=False).reset_index(drop=True)
 
     if providers.empty:
         if not warning_message:
@@ -139,16 +159,17 @@ def main():
         else:
             st.subheader(f"{len(providers)} providers found")
 
-        display_df = pd.DataFrame(
-            {
-                "Provider": providers.apply(format_provider_name, axis=1),
-                "City": providers["Rndrng_Prvdr_City"],
-                "ZIP": providers["Rndrng_Prvdr_Zip5"],
-                "Avg Billed Charge": providers["Avg_Sbmtd_Chrg"].apply(lambda x: f"${x:,.0f}"),
-                "Medicare Allowed": providers["Avg_Mdcr_Alowd_Amt"].apply(lambda x: f"${x:,.0f}"),
-                "Medicare Patients": providers["Tot_Benes"].apply(lambda x: f"{int(x):,}" if pd.notna(x) else "N/A"),
-            }
-        )
+        display_cols = {
+            "Provider": providers.apply(format_provider_name, axis=1),
+            "City": providers["Rndrng_Prvdr_City"],
+            "ZIP": providers["Rndrng_Prvdr_Zip5"],
+        }
+        if "distance_miles" in providers.columns:
+            display_cols["Distance"] = providers["distance_miles"].apply(lambda d: f"{d:.1f} mi")
+        display_cols["Avg Billed Charge"] = providers["Avg_Sbmtd_Chrg"].apply(lambda x: f"${x:,.0f}")
+        display_cols["Medicare Allowed"] = providers["Avg_Mdcr_Alowd_Amt"].apply(lambda x: f"${x:,.0f}")
+        display_cols["Medicare Patients"] = providers["Tot_Benes"].apply(lambda x: f"{int(x):,}" if pd.notna(x) else "N/A")
+        display_df = pd.DataFrame(display_cols)
         st.dataframe(display_df, width="stretch", hide_index=True)
 
     # Caveats
