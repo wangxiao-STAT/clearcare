@@ -16,7 +16,7 @@ st.set_page_config(
     page_title="ClearCare — Compare Healthcare Prices",
     page_icon="🏥",
     layout="centered",
-    initial_sidebar_state="auto",
+    initial_sidebar_state="collapsed",
 )
 
 
@@ -47,7 +47,28 @@ def format_provider_name(row: pd.Series) -> str:
     return row.get("Rndrng_Prvdr_Last_Org_Name", "Unknown")
 
 
-def main():
+LOGO_SVG_LARGE = (
+    '<svg width="80" height="80" viewBox="0 0 44 44" xmlns="http://www.w3.org/2000/svg" '
+    'style="flex-shrink:0;display:block" aria-label="ClearCare logo">'
+    '<path d="M22 2 L40 9 L40 22 Q40 33 22 42 Q4 33 4 22 L4 9 Z" '
+    'fill="#0B3B5F" stroke="#0B3B5F" stroke-width="1" stroke-linejoin="round"/>'
+    '<path d="M13 21 L19 27 L31 15" fill="none" stroke="#FFFFFF" '
+    'stroke-width="3.2" stroke-linecap="round" stroke-linejoin="round"/>'
+    '</svg>'
+)
+
+LOGO_SVG_SMALL = (
+    '<svg width="44" height="44" viewBox="0 0 44 44" xmlns="http://www.w3.org/2000/svg" '
+    'style="flex-shrink:0;display:block" aria-label="ClearCare logo">'
+    '<path d="M22 2 L40 9 L40 22 Q40 33 22 42 Q4 33 4 22 L4 9 Z" '
+    'fill="#0B3B5F" stroke="#0B3B5F" stroke-width="1" stroke-linejoin="round"/>'
+    '<path d="M13 21 L19 27 L31 15" fill="none" stroke="#FFFFFF" '
+    'stroke-width="3.2" stroke-linecap="round" stroke-linejoin="round"/>'
+    '</svg>'
+)
+
+
+def _inject_css():
     st.markdown("""
 <style>
 .block-container { padding-top: 4rem; padding-bottom: 2rem; }
@@ -55,19 +76,62 @@ def main():
 </style>
 """, unsafe_allow_html=True)
 
-    # Branded header with inline SVG logo
-    _logo_svg = (
-        '<svg width="44" height="44" viewBox="0 0 44 44" xmlns="http://www.w3.org/2000/svg" '
-        'style="flex-shrink:0;display:block" aria-label="ClearCare logo">'
-        '<path d="M22 2 L40 9 L40 22 Q40 33 22 42 Q4 33 4 22 L4 9 Z" '
-        'fill="#0B3B5F" stroke="#0B3B5F" stroke-width="1" stroke-linejoin="round"/>'
-        '<path d="M13 21 L19 27 L31 15" fill="none" stroke="#FFFFFF" '
-        'stroke-width="3.2" stroke-linecap="round" stroke-linejoin="round"/>'
-        '</svg>'
+
+def render_landing():
+    _inject_css()
+
+    st.markdown(
+        f'<div style="display:flex;align-items:center;gap:18px;padding-top:1rem;padding-bottom:1rem;">'
+        f'{LOGO_SVG_LARGE}'
+        f'<div>'
+        f'<div style="font-size:40px;font-weight:700;color:#0B3B5F;line-height:1.1;letter-spacing:-0.01em;">ClearCare</div>'
+        f'<div style="font-size:16px;color:#6b7280;line-height:1.3;">Compare healthcare prices in Indiana</div>'
+        f'</div>'
+        f'</div>',
+        unsafe_allow_html=True,
     )
+
+    st.markdown(
+        "ClearCare helps patients and benefits navigators find and compare prices for "
+        "common healthcare services across Indiana providers. We show you a realistic "
+        "price range, what's typically included, and what questions to ask before "
+        "scheduling care."
+    )
+
+    st.markdown("**What you'll find here:**")
+    st.markdown("- 16 shoppable services (MRI, CT, colonoscopy, labs, and more)")
+    st.markdown("- Real Indiana provider data from Medicare 2023")
+    st.markdown("- Plain-English explanations of what's included and what may be billed separately")
+    st.markdown("- ZIP code search to find providers near you")
+
+    st.markdown(
+        "<div style='color:#6b7280;font-size:0.85rem;padding-top:0.5rem;padding-bottom:0.5rem;'>"
+        "This is an early prototype built for pilot feedback. Prices shown are estimates "
+        "based on Medicare data; actual cash or self-pay prices may differ."
+        "</div>",
+        unsafe_allow_html=True,
+    )
+
+    if st.button("Get Started →", type="primary", use_container_width=True):
+        st.session_state.view = "search"
+        st.rerun()
+
+    st.divider()
+    st.warning(
+        "**Important:**\n"
+        "- Prices shown are based on Medicare billing data (2023). Actual cash or self-pay prices may differ.\n"
+        "- Estimates do not include separate charges for anesthesia, pathology, facility fees, or additional services.\n"
+        "- This tool provides estimates only — contact the provider for a quote before scheduling."
+    )
+
+
+def render_search(df):
+    _inject_css()
+
+    # Compact branded header
     st.markdown(
         f'<div style="display:flex;align-items:center;gap:14px;padding-bottom:0.75rem;">'
-        f'{_logo_svg}'
+        f'{LOGO_SVG_SMALL}'
         f'<div>'
         f'<div style="font-size:28px;font-weight:700;color:#0B3B5F;line-height:1.1;letter-spacing:-0.01em;">ClearCare</div>'
         f'<div style="font-size:14px;color:#6b7280;line-height:1.2;">Compare healthcare prices in Indiana</div>'
@@ -77,12 +141,11 @@ def main():
     )
     st.divider()
 
-    df = cached_load()
-
-    # --- Sidebar ---
-    query = st.sidebar.text_input(
-        "Search for a procedure",
-        placeholder="e.g. knee MRI, colonoscopy, blood test",
+    # Search input (main area, prominent)
+    query = st.text_input(
+        "What procedure are you looking for?",
+        placeholder="e.g. knee MRI, colonoscopy, blood test, a1c",
+        key="main_search",
     )
 
     # Service selection
@@ -92,7 +155,7 @@ def main():
         matches = SERVICE_CATALOG
 
     service_names = [s["name"] for s in matches]
-    selected_name = st.sidebar.selectbox("Select a service", service_names)
+    selected_name = st.selectbox("Select a service", service_names)
     selected_service = next(s for s in SERVICE_CATALOG if s["name"] == selected_name)
 
     # Variant selection (HCPCS code)
@@ -101,45 +164,51 @@ def main():
         for code in selected_service["hcpcs_codes"]
     }
     if len(variant_options) > 1:
-        variant_label = st.sidebar.radio("Variant", list(variant_options.keys()))
+        variant_label = st.radio("Variant", list(variant_options.keys()), horizontal=True)
         selected_hcpcs = variant_options[variant_label]
     else:
         selected_hcpcs = selected_service["hcpcs_codes"][0]
 
-    # Location: ZIP + radius
-    user_zip = st.sidebar.text_input(
-        "Your ZIP code",
-        max_chars=5,
-        placeholder="e.g. 46202",
-    )
-    radius_miles = st.sidebar.selectbox(
-        "Radius",
-        options=[5, 10, 25, 50, 100],
-        index=2,  # default 25 miles
-        format_func=lambda m: f"{m} miles",
-    )
+    # Filters expander (ZIP, radius, sort)
+    with st.expander("Filters", expanded=False):
+        user_zip = st.text_input(
+            "Your ZIP code",
+            max_chars=5,
+            placeholder="e.g. 46202",
+            key="filter_zip",
+        )
+        radius_miles = st.selectbox(
+            "Radius",
+            options=[5, 10, 25, 50, 100],
+            index=2,  # default 25 miles
+            format_func=lambda m: f"{m} miles",
+            key="filter_radius",
+        )
+        sort_options = {
+            "Distance (nearest first)": "distance_miles",
+            "Price (low to high)": "Avg_Sbmtd_Chrg",
+            "Medicare allowed (low to high)": "Avg_Mdcr_Alowd_Amt",
+            "Patient volume (high to low)": "Tot_Benes",
+        }
+        _zip_coords_for_default = cached_zip_coords()
+        if (
+            user_zip
+            and user_zip.isdigit()
+            and len(user_zip) == 5
+            and user_zip in _zip_coords_for_default
+        ):
+            default_sort_index = 0
+        else:
+            default_sort_index = 1
+        sort_label = st.selectbox(
+            "Sort by",
+            list(sort_options.keys()),
+            index=default_sort_index,
+            key="filter_sort",
+        )
+        sort_col = sort_options[sort_label]
 
-    # Sort
-    sort_options = {
-        "Distance (nearest first)": "distance_miles",
-        "Price (low to high)": "Avg_Sbmtd_Chrg",
-        "Medicare allowed (low to high)": "Avg_Mdcr_Alowd_Amt",
-        "Patient volume (high to low)": "Tot_Benes",
-    }
-    # Default sort: Distance when ZIP is valid and in the coords table, else Price
-    _zip_coords_for_default = cached_zip_coords()
-    if user_zip and user_zip.isdigit() and len(user_zip) == 5 and user_zip in _zip_coords_for_default:
-        default_sort_index = 0  # Distance
-    else:
-        default_sort_index = 1  # Price
-    sort_label = st.sidebar.selectbox(
-        "Sort by",
-        list(sort_options.keys()),
-        index=default_sort_index,
-    )
-    sort_col = sort_options[sort_label]
-
-    # --- Main area ---
+    # --- Results area ---
     st.title(f"{selected_name}")
     st.caption(f"{selected_service['category']} · {selected_service['variants'][selected_hcpcs]}")
 
@@ -176,10 +245,11 @@ def main():
 
     st.divider()
 
-    # Provider table
-    # If user selected Distance sort but no ZIP, fall back to Price for the initial query
+    # Provider query
     effective_sort_col = sort_col if sort_col != "distance_miles" else "Avg_Sbmtd_Chrg"
-    providers = get_providers_for_service(df, selected_name, hcpcs_code=selected_hcpcs, sort_by=effective_sort_col)
+    providers = get_providers_for_service(
+        df, selected_name, hcpcs_code=selected_hcpcs, sort_by=effective_sort_col
+    )
 
     # Apply radius filter if user entered a ZIP
     zip_coords = cached_zip_coords()
@@ -200,15 +270,12 @@ def main():
                     "Try expanding the radius."
                 )
             elif sort_col != "distance_miles":
-                # User explicitly chose a non-distance sort
                 ascending = sort_col != "Tot_Benes"
                 providers = providers.sort_values(sort_col, ascending=ascending).reset_index(drop=True)
 
     if warning_message:
         st.warning(warning_message)
 
-    # Non-ZIP: handle Tot_Benes descending; Price/Medicare already handled by get_providers_for_service;
-    # distance_miles fallback to Price already handled by effective_sort_col
     if not radius_applied and not warning_message:
         if sort_col == "Tot_Benes":
             providers = providers.sort_values("Tot_Benes", ascending=False).reset_index(drop=True)
@@ -267,6 +334,17 @@ def main():
         "- Estimates do not include separate charges for anesthesia, pathology, facility fees, or additional services.\n"
         "- This tool provides estimates only — contact the provider for a quote before scheduling."
     )
+
+
+def main():
+    if "view" not in st.session_state:
+        st.session_state.view = "landing"
+
+    if st.session_state.view == "landing":
+        render_landing()
+    else:
+        df = cached_load()
+        render_search(df)
 
 
 if __name__ == "__main__":
