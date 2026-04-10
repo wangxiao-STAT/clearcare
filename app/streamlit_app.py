@@ -9,6 +9,7 @@ import streamlit as st
 import pandas as pd
 from app.data_loader import load_data, get_providers_for_service, get_statewide_stats
 from app.search import search_services, SERVICE_CATALOG
+from app.geo import load_zip_coords, filter_by_radius
 
 st.set_page_config(page_title="ClearCare — Compare Healthcare Prices", layout="wide")
 
@@ -16,6 +17,11 @@ st.set_page_config(page_title="ClearCare — Compare Healthcare Prices", layout=
 @st.cache_data
 def cached_load():
     return load_data()
+
+
+@st.cache_data
+def cached_zip_coords():
+    return load_zip_coords()
 
 
 def format_provider_name(row: pd.Series) -> str:
@@ -60,11 +66,18 @@ def main():
     else:
         selected_hcpcs = selected_service["hcpcs_codes"][0]
 
-    # City filter
-    service_df = df[df["service_name"] == selected_name]
-    cities = sorted(service_df["Rndrng_Prvdr_City"].dropna().unique())
-    city_filter = st.sidebar.selectbox("Filter by city", ["All cities"] + list(cities))
-    city = None if city_filter == "All cities" else city_filter
+    # Location: ZIP + radius
+    user_zip = st.sidebar.text_input(
+        "Your ZIP code",
+        max_chars=5,
+        placeholder="e.g. 46202",
+    )
+    radius_miles = st.sidebar.selectbox(
+        "Radius",
+        options=[5, 10, 25, 50, 100],
+        index=2,  # default 25 miles
+        format_func=lambda m: f"{m} miles",
+    )
 
     # Sort
     sort_options = {
@@ -90,14 +103,41 @@ def main():
     st.divider()
 
     # Provider table
-    providers = get_providers_for_service(df, selected_name, hcpcs_code=selected_hcpcs, city=city, sort_by=sort_col)
+    providers = get_providers_for_service(df, selected_name, hcpcs_code=selected_hcpcs, sort_by=sort_col)
+
+    # Apply radius filter if user entered a ZIP
+    zip_coords = cached_zip_coords()
+    warning_message = None
+    radius_applied = False
+
+    if user_zip:
+        if not user_zip.isdigit() or len(user_zip) != 5:
+            warning_message = "Please enter a valid 5-digit ZIP code."
+        elif user_zip not in zip_coords:
+            warning_message = "This prototype covers Indiana only. Please enter an Indiana ZIP code."
+        else:
+            providers = filter_by_radius(providers, user_zip, radius_miles, zip_coords)
+            radius_applied = True
+            if providers.empty:
+                warning_message = (
+                    f"No providers found within {radius_miles} miles of {user_zip}. "
+                    "Try expanding the radius."
+                )
+
+    if warning_message:
+        st.warning(warning_message)
+
     if sort_col == "Tot_Benes":
         providers = providers.sort_values(sort_col, ascending=False).reset_index(drop=True)
 
     if providers.empty:
-        st.warning("No providers found for this selection.")
+        if not warning_message:
+            st.warning("No providers found for this selection.")
     else:
-        st.subheader(f"{len(providers)} providers found")
+        if radius_applied:
+            st.subheader(f"{len(providers)} providers within {radius_miles} miles of {user_zip}")
+        else:
+            st.subheader(f"{len(providers)} providers found")
 
         display_df = pd.DataFrame(
             {
