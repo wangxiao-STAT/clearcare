@@ -6,7 +6,6 @@ Output: data/processed/indiana_zips.csv with columns zip5, lat, lon
 
 import csv
 import io
-import ssl
 import sys
 import urllib.request
 import zipfile
@@ -25,10 +24,7 @@ IN_LON_MAX = -84.7
 def download_gazetteer() -> str:
     """Download and extract the Census Gazetteer text file. Returns its contents."""
     print(f"Downloading {CENSUS_URL} ...")
-    ctx = ssl.create_default_context()
-    ctx.check_hostname = False
-    ctx.verify_mode = ssl.CERT_NONE
-    with urllib.request.urlopen(CENSUS_URL, timeout=60, context=ctx) as resp:
+    with urllib.request.urlopen(CENSUS_URL, timeout=60) as resp:
         data = resp.read()
     with zipfile.ZipFile(io.BytesIO(data)) as zf:
         names = zf.namelist()
