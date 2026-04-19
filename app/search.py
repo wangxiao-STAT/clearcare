@@ -1,11 +1,12 @@
 from dataclasses import dataclass, field
+from typing import Optional
 
 
 @dataclass
 class SearchResult:
     services: list[dict]
-    matched_symptom: str | None = None
-    out_of_scope: str | None = None
+    matched_symptom: Optional[str] = None
+    out_of_scope: Optional[str] = None
 
 
 SERVICE_CATALOG = [

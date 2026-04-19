@@ -2,11 +2,12 @@
 
 import pandas as pd
 from pathlib import Path
+from typing import Optional
 
 DATA_PATH = Path(__file__).parent.parent / "data" / "processed" / "indiana_prices.parquet"
 
 
-def load_data(path: str | None = None) -> pd.DataFrame:
+def load_data(path: Optional[str] = None) -> pd.DataFrame:
     """Load the processed Parquet file."""
     p = path or str(DATA_PATH)
     return pd.read_parquet(p)
@@ -15,8 +16,8 @@ def load_data(path: str | None = None) -> pd.DataFrame:
 def get_providers_for_service(
     df: pd.DataFrame,
     service_name: str,
-    hcpcs_code: str | None = None,
-    city: str | None = None,
+    hcpcs_code: Optional[str] = None,
+    city: Optional[str] = None,
     sort_by: str = "Avg_Sbmtd_Chrg",
 ) -> pd.DataFrame:
     """Filter providers for a given service, optionally by HCPCS code and city."""

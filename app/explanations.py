@@ -2,6 +2,7 @@
 
 import json
 from pathlib import Path
+from typing import Optional
 
 DEFAULT_PATH = Path(__file__).parent.parent / "data" / "processed" / "service_explanations.json"
 
@@ -14,7 +15,7 @@ REQUIRED_FIELDS = [
 ]
 
 
-def load_explanations(path: str | None = None) -> dict[str, dict]:
+def load_explanations(path: Optional[str] = None) -> dict:
     """Load service explanations from JSON.
 
     Returns a dict mapping service_name to an explanation dict.
@@ -25,6 +26,6 @@ def load_explanations(path: str | None = None) -> dict[str, dict]:
         return json.load(f)
 
 
-def get_explanation(explanations: dict, service_name: str) -> dict | None:
+def get_explanation(explanations: dict, service_name: str) -> Optional[dict]:
     """Return the explanation for a service, or None if not found."""
     return explanations.get(service_name)

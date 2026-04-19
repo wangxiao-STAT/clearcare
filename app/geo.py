@@ -3,6 +3,7 @@
 import csv
 import math
 from pathlib import Path
+from typing import Optional, Dict, Tuple
 
 import pandas as pd
 
@@ -11,14 +12,14 @@ DEFAULT_ZIP_PATH = Path(__file__).parent.parent / "data" / "processed" / "indian
 EARTH_RADIUS_MILES = 3958.7613
 
 
-def load_zip_coords(path: str | None = None) -> dict[str, tuple[float, float]]:
+def load_zip_coords(path: Optional[str] = None) -> Dict[str, Tuple[float, float]]:
     """Load ZIP → (lat, lon) dict from CSV.
 
     Default path: data/processed/indiana_zips.csv.
     Returns a dict mapping 5-digit ZIP string to (lat, lon) floats.
     """
     p = path or str(DEFAULT_ZIP_PATH)
-    coords: dict[str, tuple[float, float]] = {}
+    coords: Dict[str, Tuple[float, float]] = {}
     with open(p, newline="") as f:
         reader = csv.DictReader(f)
         for row in reader:
@@ -41,7 +42,7 @@ def filter_by_radius(
     providers: pd.DataFrame,
     user_zip: str,
     radius_miles: float,
-    zip_coords: dict[str, tuple[float, float]],
+    zip_coords: Dict[str, Tuple[float, float]],
 ) -> pd.DataFrame:
     """Return providers within radius_miles of user_zip, sorted by distance ascending.
 
