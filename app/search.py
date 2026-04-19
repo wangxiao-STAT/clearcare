@@ -1,3 +1,13 @@
+from dataclasses import dataclass, field
+
+
+@dataclass
+class SearchResult:
+    services: list[dict]
+    matched_symptom: str | None = None
+    out_of_scope: str | None = None
+
+
 SERVICE_CATALOG = [
     {
         "name": "MRI Brain",
@@ -5,6 +15,15 @@ SERVICE_CATALOG = [
         "hcpcs_codes": ["70551", "70553"],
         "variants": {"70551": "without contrast", "70553": "with contrast"},
         "synonyms": ["mri brain", "brain mri", "brain scan", "head mri", "mri head"],
+        "symptoms": [
+            "headache",
+            "migraine",
+            "dizziness",
+            "memory problems",
+            "stroke symptoms",
+            "numbness",
+            "tingling",
+        ],
     },
     {
         "name": "MRI Knee",
@@ -12,6 +31,14 @@ SERVICE_CATALOG = [
         "hcpcs_codes": ["73721", "73723"],
         "variants": {"73721": "without contrast", "73723": "with contrast"},
         "synonyms": ["mri knee", "knee mri", "knee scan", "leg mri", "mri leg joint"],
+        "symptoms": [
+            "knee pain",
+            "knee injury",
+            "knee swelling",
+            "meniscus",
+            "acl",
+            "torn ligament",
+        ],
     },
     {
         "name": "CT Head",
@@ -19,6 +46,12 @@ SERVICE_CATALOG = [
         "hcpcs_codes": ["70450"],
         "variants": {"70450": "without contrast"},
         "synonyms": ["ct head", "head ct", "ct brain", "cat scan head", "head scan", "brain ct"],
+        "symptoms": [
+            "head injury",
+            "concussion",
+            "severe headache",
+            "head trauma",
+        ],
     },
     {
         "name": "CT Abdomen & Pelvis",
@@ -34,6 +67,14 @@ SERVICE_CATALOG = [
             "cat scan abdomen",
             "cat scan",
         ],
+        "symptoms": [
+            "belly pain",
+            "abdominal pain",
+            "stomach pain",
+            "kidney stone",
+            "appendicitis",
+            "pelvic pain",
+        ],
     },
     {
         "name": "Chest X-ray",
@@ -48,6 +89,14 @@ SERVICE_CATALOG = [
             "lung xray",
             "chest radiograph",
         ],
+        "symptoms": [
+            "cough",
+            "shortness of breath",
+            "chest pain",
+            "pneumonia",
+            "lung problem",
+            "bronchitis",
+        ],
     },
     {
         "name": "Ultrasound Abdomen",
@@ -60,6 +109,13 @@ SERVICE_CATALOG = [
             "belly ultrasound",
             "abdomen sonogram",
             "abdomen ultrasound",
+        ],
+        "symptoms": [
+            "gallbladder pain",
+            "gallstones",
+            "liver problem",
+            "belly ultrasound",
+            "abdominal swelling",
         ],
     },
     {
@@ -74,6 +130,11 @@ SERVICE_CATALOG = [
             "breast scan",
             "screening mammogram",
         ],
+        "symptoms": [
+            "breast cancer screening",
+            "breast exam",
+            "yearly mammogram",
+        ],
     },
     {
         "name": "Echocardiogram",
@@ -87,6 +148,14 @@ SERVICE_CATALOG = [
             "heart echo",
             "cardiac ultrasound",
             "echocardiography",
+        ],
+        "symptoms": [
+            "heart check",
+            "heart murmur",
+            "shortness of breath",
+            "heart failure",
+            "irregular heartbeat",
+            "chest pain",
         ],
     },
     {
@@ -105,6 +174,14 @@ SERVICE_CATALOG = [
             "colon exam",
             "lower endoscopy",
         ],
+        "symptoms": [
+            "colon cancer screening",
+            "rectal bleeding",
+            "blood in stool",
+            "bowel problem",
+            "polyps",
+            "change in bowel habits",
+        ],
     },
     {
         "name": "Upper GI Endoscopy (EGD)",
@@ -120,6 +197,14 @@ SERVICE_CATALOG = [
             "upper gi scope",
             "esophagogastroduodenoscopy",
         ],
+        "symptoms": [
+            "heartburn",
+            "acid reflux",
+            "gerd",
+            "trouble swallowing",
+            "stomach pain",
+            "ulcer",
+        ],
     },
     {
         "name": "CBC (Complete Blood Count)",
@@ -132,6 +217,12 @@ SERVICE_CATALOG = [
             "blood count",
             "white cell count",
             "blood cell count",
+        ],
+        "symptoms": [
+            "fatigue",
+            "tiredness",
+            "anemia check",
+            "infection check",
         ],
     },
     {
@@ -147,6 +238,11 @@ SERVICE_CATALOG = [
             "triglycerides",
             "lipid profile",
         ],
+        "symptoms": [
+            "cholesterol check",
+            "heart disease risk",
+            "annual cholesterol",
+        ],
     },
     {
         "name": "CMP (Comprehensive Metabolic Panel)",
@@ -160,6 +256,12 @@ SERVICE_CATALOG = [
             "chem 14",
             "metabolic test",
             "chemistry panel",
+        ],
+        "symptoms": [
+            "diabetes check",
+            "kidney function",
+            "liver function",
+            "annual blood work",
         ],
     },
     {
@@ -176,6 +278,12 @@ SERVICE_CATALOG = [
             "sugar test",
             "blood sugar test",
         ],
+        "symptoms": [
+            "diabetes check",
+            "diabetes monitoring",
+            "blood sugar",
+            "prediabetes",
+        ],
     },
     {
         "name": "TSH (Thyroid Test)",
@@ -190,6 +298,12 @@ SERVICE_CATALOG = [
             "thyroid panel",
             "thyroid function",
         ],
+        "symptoms": [
+            "fatigue",
+            "weight change",
+            "thyroid check",
+            "thyroid symptoms",
+        ],
     },
     {
         "name": "Physical Therapy Evaluation",
@@ -203,8 +317,36 @@ SERVICE_CATALOG = [
             "physical therapy evaluation",
             "pt assessment",
         ],
+        "symptoms": [
+            "knee pain",
+            "back pain",
+            "shoulder pain",
+            "neck pain",
+            "injury recovery",
+            "rehab",
+            "sports injury",
+        ],
     },
 ]
+
+OUT_OF_SCOPE_TERMS = {
+    "primary care": "primary care",
+    "pcp": "primary care",
+    "family doctor": "primary care",
+    "annual physical": "primary care",
+    "checkup": "primary care",
+    "urgent care": "urgent care",
+    "walk in clinic": "urgent care",
+    "er": "emergency",
+    "emergency room": "emergency",
+    "emergency": "emergency",
+    "dermatologist": "specialist visit",
+    "allergist": "specialist visit",
+    "mental health": "mental health",
+    "therapy": "mental health",
+    "dentist": "dental",
+    "eye doctor": "vision",
+}
 
 
 def search_services(query: str) -> list[dict]:
