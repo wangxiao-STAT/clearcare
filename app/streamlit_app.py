@@ -151,16 +151,35 @@ def render_search(df):
     # Search input (main area, prominent)
     query = st.text_input(
         "What procedure are you looking for?",
-        placeholder="e.g. knee MRI, colonoscopy, blood test, a1c",
+        placeholder="e.g. knee MRI, heartburn, cholesterol check, a1c",
         key="main_search",
     )
 
-    # Service selection
-    if query:
-        matches = search_services(query)
-    else:
-        matches = SERVICE_CATALOG
+    # Service selection — unpack SearchResult
+    result = search_services(query)
 
+    if result.out_of_scope:
+        st.info(
+            "ClearCare currently covers imaging, GI procedures, labs, and physical therapy "
+            f"in Indiana. We don't have **{result.out_of_scope}** pricing yet — "
+            "please check back as we expand."
+        )
+        st.divider()
+        st.warning(
+            "**Important:**\n"
+            "- Prices shown are based on Medicare billing data (2023). Actual cash or self-pay prices may differ.\n"
+            "- Estimates do not include separate charges for anesthesia, pathology, facility fees, or additional services.\n"
+            "- This tool provides estimates only — contact the provider for a quote before scheduling."
+        )
+        return
+
+    if result.matched_symptom and result.services:
+        matched_names = ", ".join(s["name"] for s in result.services)
+        st.caption(
+            f"Showing services for **{result.matched_symptom}**: {matched_names}"
+        )
+
+    matches = result.services if result.services else list(SERVICE_CATALOG)
     service_names = [s["name"] for s in matches]
     selected_name = st.selectbox("Select a service", service_names)
     selected_service = next(s for s in SERVICE_CATALOG if s["name"] == selected_name)
