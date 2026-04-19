@@ -349,9 +349,8 @@ OUT_OF_SCOPE_TERMS = {
 }
 
 
-def search_services(query: str) -> list[dict]:
-    """Match a plain-English query to services. Returns all services if no match."""
-    query_lower = query.lower().strip()
+def _score_procedure_match(query_lower: str) -> list[dict]:
+    """Existing procedure-name + synonym scoring. Returns the top-tier matches, or full catalog if none."""
     scored = []
     for svc in SERVICE_CATALOG:
         name_lower = svc["name"].lower()
@@ -387,3 +386,43 @@ def search_services(query: str) -> list[dict]:
     scored.sort(key=lambda x: x[0], reverse=True)
     top_score = scored[0][0]
     return [svc for score, svc in scored if score >= top_score]
+
+
+def search_services(query: str) -> SearchResult:
+    """Match a plain-English query to services.
+
+    Returns a SearchResult with:
+    - services: matched services (empty if out of scope; full catalog if query is empty or no match)
+    - matched_symptom: the symptom the user typed, if recognized
+    - out_of_scope: category label if the query is something ClearCare doesn't cover
+    """
+    if not query or not query.strip():
+        return SearchResult(services=list(SERVICE_CATALOG))
+
+    q = query.lower().strip()
+
+    # 1. Out-of-scope check FIRST
+    for term, category in OUT_OF_SCOPE_TERMS.items():
+        if term == q or term in q or q in term:
+            return SearchResult(services=[], out_of_scope=category)
+
+    # 2. Symptom match
+    matched_symptom: str | None = None
+    symptom_hits: list[dict] = []
+    seen_names: set[str] = set()
+    for svc in SERVICE_CATALOG:
+        for symptom in svc.get("symptoms", []):
+            s = symptom.lower()
+            if q == s or q in s or s in q:
+                if svc["name"] not in seen_names:
+                    symptom_hits.append(svc)
+                    seen_names.add(svc["name"])
+                if matched_symptom is None:
+                    matched_symptom = symptom
+                break
+    if symptom_hits:
+        return SearchResult(services=symptom_hits, matched_symptom=matched_symptom)
+
+    # 3. Existing procedure-name + synonym scoring
+    services = _score_procedure_match(q)
+    return SearchResult(services=services)
